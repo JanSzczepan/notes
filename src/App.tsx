@@ -1,5 +1,7 @@
+import { useMemo } from 'react'
 import { Container } from 'react-bootstrap'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { v4 as uuidv4 } from 'uuid'
 import useLocalStorage from './hooks/useLocalStorage'
 import NewNote from './pages/NewNote'
 
@@ -32,8 +34,20 @@ const App = () => {
    const [notes, setNotes] = useLocalStorage<RawNote[]>('NOTES', [])
    const [tags, setTags] = useLocalStorage<Tag[]>('TAGS', [])
 
-   const onSubmit = (data: NoteData) => {
-      console.log(data)
+   const notesWithTags = useMemo(() => {
+      return notes.map((note) => {
+         return { ...note, tags: tags.filter((tag) => note.tagIds.includes(tag.id)) }
+      })
+   }, [notes, tags])
+
+   const onCreateNote = ({ tags, ...data }: NoteData) => {
+      setNotes((prevNotes) => {
+         return [...prevNotes, { ...data, id: uuidv4(), tagIds: tags.map((tag) => tag.id) }]
+      })
+   }
+
+   const onAddTag = (tag: Tag) => {
+      setTags((prevTags) => [...prevTags, tag])
    }
 
    return (
@@ -45,7 +59,13 @@ const App = () => {
             />
             <Route
                path='/new'
-               element={<NewNote onSubmit={onSubmit} />}
+               element={
+                  <NewNote
+                     onSubmit={onCreateNote}
+                     addTag={onAddTag}
+                     availableTags={tags}
+                  />
+               }
             />
             <Route path='/:id'>
                <Route
