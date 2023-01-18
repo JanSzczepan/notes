@@ -2,7 +2,26 @@ import { Container } from 'react-bootstrap'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import NewNote from './pages/NewNote'
 
+export type Tag = {
+   id: string
+   label: string
+}
+
+export type NoteData = {
+   title: string
+   markdown: string
+   tags: Tag[]
+}
+
+export type Note = {
+   id: string
+} & NoteData
+
 const App = () => {
+   const onSubmit = (data: NoteData) => {
+      console.log(data)
+   }
+
    return (
       <Container className='py-4'>
          <Routes>
@@ -12,7 +31,7 @@ const App = () => {
             />
             <Route
                path='/new'
-               element={<NewNote />}
+               element={<NewNote onSubmit={onSubmit} />}
             />
             <Route path='/:id'>
                <Route
