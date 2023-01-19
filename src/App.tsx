@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import useLocalStorage from './hooks/useLocalStorage'
 import NewNote from './pages/NewNote'
+import NoteList from './pages/NoteList'
 
 export type Tag = {
    id: string
@@ -55,7 +56,12 @@ const App = () => {
          <Routes>
             <Route
                path='/'
-               element={<h1>Hi</h1>}
+               element={
+                  <NoteList
+                     availableTags={tags}
+                     notes={notesWithTags}
+                  />
+               }
             />
             <Route
                path='/new'
