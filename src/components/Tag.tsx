@@ -9,10 +9,11 @@ type TagProps = {
 
 const TagComponent = ({ tag, onUpdateTag, onDeleteTag }: TagProps) => {
    return (
-      <Row key={tag.id}>
+      <Row>
          <Col>
             <Form.Control
                type='text'
+               required
                value={tag.label}
                onChange={(e) => onUpdateTag(tag.id, e.target.value)}
             />
@@ -21,6 +22,7 @@ const TagComponent = ({ tag, onUpdateTag, onDeleteTag }: TagProps) => {
             <Button
                variant='outline-danger'
                onClick={() => onDeleteTag(tag.id)}
+               style={{ minWidth: '40px' }}
             >
                &times;
             </Button>
