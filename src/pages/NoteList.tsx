@@ -9,11 +9,10 @@ import EditTagsModal from '../components/EditTagsModal'
 type NoteListProps = {
    availableTags: Tag[]
    notes: Note[]
-   onUpdateTag: (id: string, label: string) => void
-   onDeleteTag: (id: string) => void
+   updateTags: (tags: Tag[]) => void
 }
 
-const NoteList = ({ availableTags, notes, onUpdateTag, onDeleteTag }: NoteListProps) => {
+const NoteList = ({ availableTags, notes, updateTags }: NoteListProps) => {
    const [title, setTitle] = useState('')
    const [selectedTags, setSelectedTags] = useState<Tag[]>([])
 
@@ -94,8 +93,7 @@ const NoteList = ({ availableTags, notes, onUpdateTag, onDeleteTag }: NoteListPr
             availableTags={availableTags}
             show={isEditTagsModalOpen}
             handleClose={() => setIsEditTagsModalOpen(false)}
-            onUpdateTag={onUpdateTag}
-            onDeleteTag={onDeleteTag}
+            updateTags={updateTags}
          />
       </>
    )

@@ -60,12 +60,8 @@ const App = () => {
       setTags((prevTags) => [...prevTags, tag])
    }
 
-   const onUpdateTag = (id: string, label: string) => {
-      setTags((prevTags) => prevTags.map((tag) => (tag.id === id ? { ...tag, label } : tag)))
-   }
-
-   const onDeleteTag = (id: string) => {
-      setTags((prevTags) => prevTags.filter((tag) => tag.id !== id))
+   const updateTags = (tags: Tag[]) => {
+      setTags(tags)
    }
 
    return (
@@ -77,8 +73,7 @@ const App = () => {
                   <NoteList
                      availableTags={tags}
                      notes={notesWithTags}
-                     onUpdateTag={onUpdateTag}
-                     onDeleteTag={onDeleteTag}
+                     updateTags={updateTags}
                   />
                }
             />
