@@ -5,18 +5,21 @@ import ReactSelect from 'react-select'
 import { Note, Tag } from '../App'
 import NoteCard from '../components/NoteCard/NoteCard'
 import EditTagsModal from '../components/EditTagsModal'
+import DeleteAllModal from '../components/DeleteAllModal'
 
 type NoteListProps = {
    availableTags: Tag[]
    notes: Note[]
    updateTags: (tags: Tag[]) => void
+   deleteAllNotes: () => void
 }
 
-const NoteList = ({ availableTags, notes, updateTags }: NoteListProps) => {
+const NoteList = ({ availableTags, notes, updateTags, deleteAllNotes }: NoteListProps) => {
    const [title, setTitle] = useState('')
    const [selectedTags, setSelectedTags] = useState<Tag[]>([])
 
    const [isEditTagsModalOpen, setIsEditTagsModalOpen] = useState(false)
+   const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false)
 
    const filteredNotes = useMemo(() => {
       return notes.filter((note) => {
@@ -43,6 +46,12 @@ const NoteList = ({ availableTags, notes, updateTags }: NoteListProps) => {
                      onClick={() => setIsEditTagsModalOpen(true)}
                   >
                      Edit Tags
+                  </Button>
+                  <Button
+                     variant='outline-danger'
+                     onClick={() => setIsDeleteAllModalOpen(true)}
+                  >
+                     Delete All
                   </Button>
                </Stack>
             </Col>
@@ -94,6 +103,11 @@ const NoteList = ({ availableTags, notes, updateTags }: NoteListProps) => {
             show={isEditTagsModalOpen}
             handleClose={() => setIsEditTagsModalOpen(false)}
             updateTags={updateTags}
+         />
+         <DeleteAllModal
+            show={isDeleteAllModalOpen}
+            handleClose={() => setIsDeleteAllModalOpen(false)}
+            deleteAllNotes={deleteAllNotes}
          />
       </>
    )

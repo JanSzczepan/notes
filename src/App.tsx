@@ -56,11 +56,15 @@ const App = () => {
       setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id))
    }
 
+   const onDeleteAllNotes = () => {
+      setNotes([])
+   }
+
    const onAddTag = (tag: Tag) => {
       setTags((prevTags) => [...prevTags, tag])
    }
 
-   const updateTags = (tags: Tag[]) => {
+   const onUpdateTags = (tags: Tag[]) => {
       setTags(tags)
    }
 
@@ -73,7 +77,8 @@ const App = () => {
                   <NoteList
                      availableTags={tags}
                      notes={notesWithTags}
-                     updateTags={updateTags}
+                     updateTags={onUpdateTags}
+                     deleteAllNotes={onDeleteAllNotes}
                   />
                }
             />
