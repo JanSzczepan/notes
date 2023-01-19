@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import Note from './components/Note'
 import useLocalStorage from './hooks/useLocalStorage'
+import EditNote from './pages/EditNote'
 import NewNote from './pages/NewNote'
 import NoteLayout from './pages/NoteLayout'
 import NoteList from './pages/NoteList'
@@ -44,9 +45,15 @@ const App = () => {
    }, [notes, tags])
 
    const onCreateNote = ({ tags, ...data }: NoteData) => {
-      setNotes((prevNotes) => {
-         return [...prevNotes, { ...data, id: uuidv4(), tagIds: tags.map((tag) => tag.id) }]
-      })
+      setNotes((prevNotes) => [...prevNotes, { ...data, id: uuidv4(), tagIds: tags.map((tag) => tag.id) }])
+   }
+
+   const onUpdateNote = (id: string, { tags, ...data }: NoteData) => {
+      setNotes((prevNotes) => prevNotes.map((note) => (note.id === id ? { ...note, ...data, tagIds: tags.map((tag) => tag.id) } : note)))
+   }
+
+   const onDeleteNote = (id: string) => {
+      setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id))
    }
 
    const onAddTag = (tag: Tag) => {
@@ -81,11 +88,17 @@ const App = () => {
             >
                <Route
                   index
-                  element={<Note />}
+                  element={<Note onDelete={onDeleteNote} />}
                />
                <Route
                   path='edit'
-                  element={<h1>Edit</h1>}
+                  element={
+                     <EditNote
+                        onSubmit={onUpdateNote}
+                        addTag={onAddTag}
+                        availableTags={tags}
+                     />
+                  }
                />
             </Route>
             <Route

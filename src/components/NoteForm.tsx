@@ -9,13 +9,12 @@ type NoteFormProps = {
    onSubmit: (data: NoteData) => void
    addTag: (tag: Tag) => void
    availableTags: Tag[]
-}
+} & Partial<NoteData>
 
-const NoteForm = ({ onSubmit, addTag, availableTags }: NoteFormProps) => {
+const NoteForm = ({ onSubmit, addTag, availableTags, title = '', markdown = '', tags = [] }: NoteFormProps) => {
    const titleRef = useRef<HTMLInputElement>(null)
    const markdownRef = useRef<HTMLTextAreaElement>(null)
-
-   const [selectedTags, setSelectedTags] = useState<Tag[]>([])
+   const [selectedTags, setSelectedTags] = useState<Tag[]>(tags)
 
    const navigate = useNavigate()
 
@@ -41,6 +40,7 @@ const NoteForm = ({ onSubmit, addTag, availableTags }: NoteFormProps) => {
                      <Form.Control
                         ref={titleRef}
                         required
+                        defaultValue={title}
                      />
                   </Form.Group>
                </Col>
@@ -68,6 +68,7 @@ const NoteForm = ({ onSubmit, addTag, availableTags }: NoteFormProps) => {
                   as='textarea'
                   rows={15}
                   required
+                  defaultValue={markdown}
                />
             </Form.Group>
             <Stack
